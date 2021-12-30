@@ -19,6 +19,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\StudentInfoUpdateRequested' => [
             'App\Listeners\UpdateStudentInfo',
         ],
+        'App\Events\UserDecline' => [
+            'App\Listeners\SendUserDeclineEmail',
+        ],
     ];
 
     /**

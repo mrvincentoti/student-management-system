@@ -15,10 +15,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+
+
 Auth::routes();
 
 Route::middleware(['auth', 'master'])->group(function () {
-    Route::get('/masters', 'MasterController@index')->name('masters.index');
+    //Route::get('/masters', 'MasterController@index')->name('masters.index');
+    Route::resource('/masters', 'SchoolController')->only(['index', 'edit', 'store', 'update']);
     Route::resource('/schools', 'SchoolController')->only(['index', 'edit', 'store', 'update']);
 });
 
@@ -48,7 +52,16 @@ Route::middleware(['auth', 'teacher'])->prefix('grades')->group(function () {
     Route::post('save-grade', 'GradeController@update');
 });
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('view/acceptance/{id}', 'UserController@aview')->name('view-acceptance');
+    Route::get('approve/acceptance/{id}', 'UserController@aapprove')->name('approve-acceptance');
+    Route::get('decline/acceptance/{id}', 'UserController@adecline')->name('decline-acceptance');
+    Route::post('decline', 'UserController@declinePost')->name('decline');
+    Route::get('generate-matric-number/{id}', 'UserController@generateMatric')->name('generate-matric-number');
+});
+
 Route::get('grades/{student_id}', 'GradeController@index')->middleware(['auth', 'teacher.student']);
+Route::get('grades/cgpa/{student_id}', 'GradeController@cgpa')->middleware(['auth', 'teacher.student']);
 
 Route::middleware(['auth', 'accountant'])->prefix('fees')->name('fees.')->group(function () {
     Route::get('all', 'FeeController@index');
@@ -68,11 +81,15 @@ Route::middleware(['auth', 'teacher'])->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('students/courses', 'UserController@departmentStudents')->name('students/courses');
+    Route::post('students/courses', 'UserController@departmentStudentsPost');
+});
+
+Route::middleware(['auth'])->group(function () {
     if ('production' != config('app.env')) {
         Route::get('user/config/impersonate', 'UserController@impersonateGet');
         Route::post('user/config/impersonate', 'UserController@impersonate');
     }
-
     Route::get('users/{school_code}/{student_code}/{teacher_code}', 'UserController@index');
     Route::get('users/{school_code}/{role}', 'UserController@indexOther');
     Route::get('user/{user_code}', 'UserController@show');
@@ -81,6 +98,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('section/students/{section_id}', 'UserController@sectionStudents');
 
     Route::get('courses/{teacher_id}/{section_id}', 'CourseController@index');
+    Route::get('student/course-registration', 'CourseController@register');
+    Route::get('student/student-courses/{id}', 'StudentcourseController@myCourse');
+    Route::post('/courses/get-semester-courses', 'CourseController@getSemesterCourses');
+    Route::post('student/send-course-email', 'StudentcourseController@declineCourse');
+    Route::post('save-student-courses', 'StudentcourseController@saveStudentCourses')->name('save-student-courses');
+    Route::post('remove-student-course', 'StudentcourseController@removeCourse')->name('remove-student-course');
 });
 
 Route::middleware(['auth', 'teacher'])->group(function () {
@@ -91,6 +114,20 @@ Route::middleware(['auth', 'teacher'])->group(function () {
     Route::post('courses/save-configuration', 'CourseController@saveConfiguration');
 });
 
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('file-import-export', 'JambController@fileImportExport');
+    Route::post('file-import', 'JambController@fileImport')->name('file-import');
+    Route::get('file-export', 'JambController@fileExport')->name('file-export');
+    Route::get('students/{school_id}/{dummy}', 'UserController@sindex')->name('s');
+    Route::post('students/{school_id}/{dummy}', 'UserController@sindexPost');
+
+    // hostel
+    Route::get('hostels', 'HostelController@index');
+    Route::post('hostel/create', 'HostelController@create')->name('hostel/create');
+});
+
+Route::post('exported', 'UserController@export');
+Route::post('academic/syllabus/add', 'SyllabusController@add');
 Route::middleware(['auth', 'admin'])->prefix('academic')->name('academic.')->group(function () {
     Route::get('syllabus', 'SyllabusController@index');
     Route::get('syllabus/{class_id}', 'SyllabusController@create');
@@ -98,6 +135,7 @@ Route::middleware(['auth', 'admin'])->prefix('academic')->name('academic.')->gro
     Route::get('event', 'EventController@create');
     Route::get('certificate', 'CertificateController@create');
     Route::get('routine', 'RoutineController@index');
+
     Route::get('routine/{section_id}', 'RoutineController@create');
     Route::prefix('remove')->name('remove.')->group(function () {
         Route::get('syllabus/{id}', 'SyllabusController@update');
@@ -165,9 +203,9 @@ Route::middleware(['auth', 'accountant'])->prefix('accounts')->name('accounts.')
 Route::middleware(['auth', 'master'])->group(function () {
     Route::get('register/admin/{id}/{code}', function ($id, $code) {
         session([
-        'register_role' => 'admin',
-        'register_school_id' => $id,
-        'register_school_code' => $code,
+            'register_role' => 'admin',
+            'register_school_id' => $id,
+            'register_school_code' => $code,
         ]);
 
         return redirect()->route('register');
@@ -179,11 +217,14 @@ Route::middleware(['auth', 'master'])->group(function () {
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('users/add-custom-users/{school_code}', 'UserController@addCustomUsers');
+    Route::post('users/add-custom-user', 'UserController@addCustomUserPost');
+    Route::post('users/delete-custom-user', 'UserController@deleteCustomUserPost');
     Route::prefix('school')->name('school.')->group(function () {
         Route::post('add-class', 'MyclassController@store');
         Route::post('add-section', 'SectionController@store');
         Route::post('add-department', 'SchoolController@addDepartment');
-        Route::get('promote-students/{section_id}', 'UserController@promoteSectionStudents');
+        Route::get('promote-students/{section_id}/{class_id}', 'UserController@promoteSectionStudents');
         Route::post('promote-students', 'UserController@promoteSectionStudentsPost');
         Route::post('theme', 'SchoolController@changeTheme');
         Route::post('set-ignore-sessions', 'SchoolController@setIgnoreSessions');
@@ -196,13 +237,14 @@ Route::middleware(['auth', 'admin'])->group(function () {
             $classes = \App\Myclass::where('school_id', \Auth::user()->school->id)->pluck('id');
             $sections = \App\Section::with('class')->whereIn('class_id', $classes)->get();
             session([
-        'register_role' => 'teacher',
-        'departments' => $departments,
-        'register_sections' => $sections,
-      ]);
+                'register_role' => 'teacher',
+                'departments' => $departments,
+                'register_sections' => $sections,
+            ]);
 
             return redirect()->route('register');
         });
+
         Route::get('accountant', function () {
             session(['register_role' => 'accountant']);
 
@@ -229,19 +271,20 @@ Route::middleware(['auth', 'master.admin'])->group(function () {
     Route::post('upload/file', 'UploadController@upload');
     Route::post('users/import/user-xlsx', 'UploadController@import');
     Route::get('users/export/students-xlsx', 'UploadController@export');
+    Route::get('users/export/registered-xlsx', 'UploadController@exportregistered');
     //   Route::get('pdf/profile/{user_id}',function($user_id){
-//     $data = App\User::find($user_id);
-//     PDF::setOptions(['defaultFont' => 'sans-serif', 'isHtml5ParserEnabled' => true]);
-//     $pdf = PDF::loadView('pdf.profile-pdf', ['user' => $data]);
-// 		return $pdf->stream('profile.pdf');
-//   });
-//   Route::get('pdf/result/{user_id}/{exam_id}',function($user_id, $exam_id){
-//     $data = App\User::find($user_id);
-//     $grades = App\Grade::with('exam')->where('student_id', $user_id)->where('exam_id',$exam_id)->latest()->get();
-//     PDF::setOptions(['defaultFont' => 'sans-serif', 'isHtml5ParserEnabled' => true]);
-//     $pdf = PDF::loadView('pdf.result-pdf', ['grades' => $grades, 'user'=>$data]);
-// 		return $pdf->stream('result.pdf');
-//   });
+    //     $data = App\User::find($user_id);
+    //     PDF::setOptions(['defaultFont' => 'sans-serif', 'isHtml5ParserEnabled' => true]);
+    //     $pdf = PDF::loadView('pdf.profile-pdf', ['user' => $data]);
+    // 		return $pdf->stream('profile.pdf');
+    //   });
+    //   Route::get('pdf/result/{user_id}/{exam_id}',function($user_id, $exam_id){
+    //     $data = App\User::find($user_id);
+    //     $grades = App\Grade::with('exam')->where('student_id', $user_id)->where('exam_id',$exam_id)->latest()->get();
+    //     PDF::setOptions(['defaultFont' => 'sans-serif', 'isHtml5ParserEnabled' => true]);
+    //     $pdf = PDF::loadView('pdf.result-pdf', ['grades' => $grades, 'user'=>$data]);
+    // 		return $pdf->stream('result.pdf');
+    //   });
 });
 Route::middleware(['auth', 'teacher'])->group(function () {
     Route::post('calculate-marks', 'GradeController@calculateMarks');
@@ -270,3 +313,33 @@ Route::middleware(['auth', 'student'])->prefix('stripe')->group(function () {
     Route::post('charge', 'CashierController@store');
     Route::get('receipts', 'PaymentController@index');
 });
+
+// Applicant route
+Route::get('/fill-acceptance-form', 'UserController@acceptanceFormGet')->name('fill-acceptance-form');
+Route::post('/acceptance-form', 'UserController@acceptanceFormPost')->name('acceptance-form');
+Route::get('/acceptance-success/{id}', 'UserController@acceptanceSuccess')->name('acceptance-success');
+
+Route::get('/update-details/{id}', 'UserController@updateDetails')->name('update-details');
+Route::post('/update-details-post', 'UserController@updateDetailsPost')->name('update-details-post');
+
+Route::get('/update-matriculation-number', 'UserController@updateMatricNumber')->name('update-matriculation-number');
+Route::get('/students-in-department/{id}', 'UserController@studentInDepartment')->name('students-in-department');
+
+Route::get('/student-verification', 'UserController@studentVerificationGet')->name('student-verification');
+Route::post('/student-verification-post', 'UserController@studentVerificationPost')->name('student-verification-post');
+Route::get('/update-applicant/{id}', 'UserController@updateApplicantGet')->name('update-applicant');
+Route::post('/applicantion-summary', 'UserController@updateApplicantPost')->name('applicantion-summary');
+Route::get('/application-summary-payment/{id}/{pid}', 'UserController@applicationSummary')->name('application-summary-payment');
+Route::post('/applicant', 'UserController@storeApplicant')->name('applicant');
+Route::post('/storestudent', 'UserController@storeStud')->name('storestudent');
+Route::post('/pay', 'UserController@initializePayment')->name('pay');
+Route::post('/payment/callback', 'UserController@paymentVerification')->name('payment-verification');
+Route::get('/payment-success/{id}', 'UserController@paymentSuccess')->name('payment-success');
+Route::get('/get-state/{id}', 'UserController@getState')->name('get-state');
+Route::get('/get-city/{id}', 'UserController@getCity')->name('get-city');
+Route::get('/departments/{id}', 'UserController@getDepartment')->name('departments');
+Route::get('/programmes/{id}', 'UserController@getProgrammes')->name('programmes');
+Route::get('/programmes-duration/{id}', 'UserController@getDuration')->name('programmes-duration');
+Route::get('/teaching/{id}', 'SettingController@departmentTeachers')->name('teaching');
+
+Route::post('/student/save-code', 'UserController@saveCodePost')->name('save-code');

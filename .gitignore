@@ -12,6 +12,8 @@ yarn-error.log
 .env
 .php_cs.cache
 .rnd
-/database/database.*
 .env.dusk.local
 _ide_helper.php
+/v9
+/v10
+/v11

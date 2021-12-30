@@ -5,31 +5,30 @@
 @section('content')
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-2" id="side-navbar">
-            @include('layouts.leftside-menubar')
-        </div>
-        <div class="col-md-10" id="main-container">
-            <div class="panel panel-default">
-              @if(count($users) > 0)
-              @foreach ($users as $user)
-                <div class="page-panel-title">@lang('List of all') {{__(ucfirst($user->role))}}s</div>
-                 @break($loop->first)
-              @endforeach
-                <div class="panel-body">
+        <div class="col-md-12" id="main-container">
+            <div class="card">
+                @if(count($users) > 0)
+                @foreach ($users as $user)
+                <div class="card-header">
+                    <h4>@lang('List of all') {{__(ucfirst($user->role))}}s</h4>
+                </div>
+                @break($loop->first)
+                @endforeach
+                <div class="card-body">
                     @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
+                    <div class="alert alert-success">
+                        {{ session('status') }}
+                    </div>
                     @endif
 
                     @component('components.users-list',['users'=>$users,'current_page'=>$current_page,'per_page'=>$per_page])
                     @endcomponent
                 </div>
-              @else
-                <div class="panel-body">
+                @else
+                <div class="card-body">
                     @lang('No Related Data Found.')
                 </div>
-              @endif
+                @endif
             </div>
         </div>
     </div>

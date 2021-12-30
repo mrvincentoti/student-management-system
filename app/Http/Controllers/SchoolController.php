@@ -70,9 +70,11 @@ class SchoolController extends Controller
     public function addDepartment(Request $request){
       $request->validate([
         'department_name' => 'required|string|max:50',
+        'faculty_id' => 'required'
       ]);
       $s = new Department;
       $s->school_id = \Auth::user()->school_id;
+      $s->faculty_id = $request->faculty_id;
       $s->department_name = $request->department_name;
       $s->save();
       return back()->with('status', __('Created'));

@@ -27,7 +27,9 @@ class User extends Model implements
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'role', 'code',/* school code*/'student_code', 'active', 'verified', 'school_id', 'section_id', 'address', 'about', 'phone_number', 'blood_group', 'nationality', 'gender', 'department_id',
+        'surname', 'name', 'email', 'password', 'role', 'code',/* school code*/ 'student_code', 'active', 'verified', 'school_id',
+        'section_id', 'address', 'about', 'phone_number', 'blood_group', 'nationality', 'gender', 'department_id',
+        'session', 'nin', 'firstname', 'othername', 'jambregno', 'modeofentry'
     ];
 
     /**
@@ -56,23 +58,36 @@ class User extends Model implements
 
     public function department()
     {
-        return $this->belongsTo('App\Department','department_id', 'id');
+        return $this->belongsTo('App\Department', 'department_id', 'id');
     }
 
-    public function studentInfo(){
-        return $this->hasOne('App\StudentInfo','student_id');
+    public function faculty()
+    {
+        return $this->belongsTo('App\Faculty', 'faculty_id', 'id');
     }
 
-    public function studentBoardExam(){
-        return $this->hasMany('App\StudentBoardExam','student_id');
+    public function studentInfo()
+    {
+        return $this->hasOne('App\StudentInfo', 'student_id');
     }
 
-    public function notifications(){
-        return $this->hasMany('App\Notification','student_id');
+    public function studentBoardExam()
+    {
+        return $this->hasMany('App\StudentBoardExam', 'student_id');
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany('App\Notification', 'student_id');
     }
 
     public function hasRole(string $role): bool
     {
         return $this->role == $role ? true : false;
+    }
+
+    public function studentcourses()
+    {
+        return $this->hasMany(Studentcourse::class);
     }
 }

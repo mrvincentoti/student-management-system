@@ -12,9 +12,9 @@
                 <div class="page-panel-title">My Certificates</div>
                 <div class="panel-body">
                     @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
+                    <div class="alert alert-success">
+                        {{ session('status') }}
+                    </div>
                     @endif
                     @component('components.certificate-list',['files'=>$certificates])
                     @endcomponent

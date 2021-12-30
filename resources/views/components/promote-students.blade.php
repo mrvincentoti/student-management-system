@@ -21,7 +21,7 @@
                     <th scope="row">{{ ($loop->index + 1) }}</th>
                     <td><small>{{$student->student_code}}</small></td>
                     <td>
-                        <small><a href="{{url('student/'.$student->student_code)}}">{{$student->name}}</a></small>
+                        <small><a href="">{{$student->name}}</a></small>
                     </td>
                     <td>
                         <div class="checkbox">
@@ -34,29 +34,27 @@
                         <small>
                             {{$student->session}}
                             @if($student->session == now()->year || $student->session > now()->year)
-                            <span class="label label-success">@lang('Promoted/New')</span>
+                            <span class="badge badge-success">@lang('Promoted/New')</span>
                             @else
-                            <span class="label label-danger">@lang('Not Promoted')</span>
+                            <span class="badge badge-danger">@lang('Not Promoted')</span>
                             @endif
                         </small>
                     </td>
                     <td>
-                        <input class="form-control datepicker" name="to_session[]"
-                            value="{{date('Y', strtotime('+1 year'))}}">
+                        <input class="form-control" name="to_session[]" value="{{date('Y', strtotime('+1 year'))}}">
                     </td>
                     <td style="text-align: center;">
-                        <small>@lang('Class'): {{$student->section->class->class_number}} - @lang('Section'):
-                            {{$student->section->section_number}}</small>
+                        <small>@lang('Department'): {{$student->section->class->class_number}} - @lang('Semester'):
+                            {{$student->section->section_number}} - {{$student->section->room_number}}</small>
                     </td>
                     <td>
                         <select id="to_section" class="form-control" name="to_section[]" required>
                             @foreach($classes as $class)
-                            @foreach($class->sections as $section)
-                            <option value="{{$section->id}}">
-                                @lang('Class'): {{$class->class_number}} -
-                                @lang('Section'): {{$section->section_number}}
+                            <option value="{{$class->section_id}}">
+                                {{$class->class_number}} -
+                                @lang(' ') {{$class->section_number}} -
+                                @lang(' ') {{$class->level.' L'}}
                             </option>
-                            @endforeach
                             @endforeach
                         </select>
                     </td>
@@ -69,14 +67,14 @@
         </div>
     </form>
 </div>
+<script src="{{asset('admin/js/jquery.js')}}"></script>
 
-<script>
-    $(function () {
+<!-- <script>
+    $(function() {
         $('.datepicker').datepicker({
             format: "yyyy",
             viewMode: "years",
             minViewMode: "years"
         });
     })
-
-</script>
+</script> -->

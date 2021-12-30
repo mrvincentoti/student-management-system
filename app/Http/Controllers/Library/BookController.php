@@ -13,36 +13,40 @@ class BookController extends Controller
     public function __construct()
     {
         view()->share('types', [
-           __('Academic'),
-           __('Magazine'),
-           __('Story'),
-           __('Other')
+            __('Academic'),
+            __('Magazine'),
+            __('Story'),
+            __('Other')
         ]);
     }
 
-    public function index() {
+    public function index()
+    {
         $books = Book::bySchool(auth()->user()->school_id)->paginate();
 
         return view('library.books.index', compact('books'));
     }
 
-    public function show(Book $book) {
+    public function show(Book $book)
+    {
         return view('library.books.show', compact('book'));
     }
 
-    public function edit(Book $book) {
+    public function edit(Book $book)
+    {
         $classes = Myclass::bySchool(auth()->user()->school_id)->get();
-
         return view('library.books.edit', compact('book', 'classes'));
     }
 
-    public function create() {
+    public function create()
+    {
         $classes = Myclass::bySchool(auth()->user()->school_id)->get();
 
         return view('library.books.create', compact('classes'));
     }
 
-    public function store(BookRequest $request) {
+    public function store(BookRequest $request)
+    {
         $book = Book::create([
             'title'     => $request->title,
             'book_code' => $request->book_code,

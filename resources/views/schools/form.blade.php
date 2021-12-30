@@ -1,8 +1,3 @@
-<button class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#schoolModal" dusk="create-school-button">
-    + @lang('Create School')
-</button>
-
-<!-- Modal -->
 <div class="modal fade" id="schoolModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <form class="form-horizontal" method="POST" action="{{ route('schools.store') }}">
@@ -16,9 +11,9 @@
                     <div class="form-group{{ $errors->has('school_name') ? ' has-error' : '' }}">
                         <label for="name" class="col-md-4 control-label">@lang('School Name')</label>
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="@lang('School Name')" required>
-
+                        
                             @if ($errors->has('name'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('name') }}</strong>
@@ -30,7 +25,7 @@
                     <div class="form-group{{ $errors->has('medium') ? ' has-error' : '' }}">
                         <label for="medium" class="col-md-4 control-label">@lang('School Medium')</label>
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <select id="medium" class="form-control" name="medium">
                                 <option selected="selected">@lang('Bangla')</option>
                                 <option>@lang('English')</option>
@@ -51,7 +46,7 @@
                     <div class="form-group{{ $errors->has('established') ? ' has-error' : '' }}">
                         <label for="established" class="col-md-4 control-label">@lang('School Established')</label>
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <input id="established" type="text" class="form-control" name="established" value="{{ old('established') }}" placeholder="@lang('School Established')" required>
 
                             @if ($errors->has('established'))
@@ -65,7 +60,7 @@
                     <div class="form-group{{ $errors->has('about') ? ' has-error' : '' }}">
                         <label for="about" class="col-md-4 control-label">@lang('About')</label>
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <textarea id="about" class="form-control" rows="3" name="about" placeholder="@lang('About School')" required>{{ old('about') }}</textarea>
 
                             @if ($errors->has('about'))

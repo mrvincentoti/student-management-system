@@ -40,10 +40,14 @@ class MyclassController extends Controller
     public function store(Request $request)
     {
       $request->validate([
-        'class_number' => 'required'
+        'class_number' => 'required',
+        'department_id' => 'required',
+        'duration' => 'required'
       ]);
       $tb = new Myclass;
       $tb->class_number = $request->class_number;
+      $tb->department_id = $request->department_id;
+      $tb->duration = $request->duration;
       $tb->school_id = \Auth::user()->school_id;
       $tb->group = (!empty($request->group))?$request->group:'';
       $tb->save();

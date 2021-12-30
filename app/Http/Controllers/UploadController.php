@@ -148,4 +148,9 @@ class UploadController extends Controller {
       else if($request->type == 'teacher')
         return Excel::download(new TeachersExport($request->year), date('Y').'-teachers.xlsx');
     }
+
+    public function exportregistered(){
+      dd("meeee");
+       //return Excel::download(new StudentsExport($request->year), date('Y').'-students.xlsx');
+    }
 }

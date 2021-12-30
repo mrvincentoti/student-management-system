@@ -5,13 +5,13 @@
 @section('content')
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-2">
+        <!-- <div class="col-md-2">
           @include('layouts.leftside-menubar')
-        </div>
-        <div class="col-md-10" id="main-container">
-            <div class="panel panel-default">
+        </div> -->
+        <div class="col-md-12" id="main-container">
+            <div class="card">
               @if(count($grades) > 0)
-                <div class="panel-body">
+                <div class="card-body">
                     @if (session('status'))
                         <div class="alert alert-success">
                             {{ session('status') }}
@@ -32,9 +32,9 @@
                     <br>
                     <div class="row" style="margin-bottom: 2%;">
                       <div class="col-md-10">
-                        <b>@lang('Course') - </b> <small>{{$grade->course->course_name}}</small>
-                        <b>@lang('Class') - </b> <small>{{$grade->course->section->class->class_number}}</small> <b>@lang('Section') - </b> <small>{{$grade->course->section->section_number}}</small> 
-                        <b>@lang('Exam') - </b> <small>{{$grade->exam->exam_name}}</small>
+                        <b>@lang('Course ') - </b> <small>{{$grade->course->course_name." " }}</small>
+                        <b>@lang('Department ') - </b> <small>{{$grade->course->section->class->class_number." " }}</small> <b>@lang('Semester') - </b> <small>{{$grade->course->section->section_number." "}}</small> 
+                        <b>@lang('Exam ') - </b> <small>{{$grade->exam->exam_name }}</small>
                       </div>
                     </div>
                     <div class="row">
@@ -70,7 +70,7 @@
                 @endforeach
                 </div>
               @else
-                <div class="panel-body">
+                <div class="card-body">
                     @lang('No Related Data Found.')
                 </div>
               @endif

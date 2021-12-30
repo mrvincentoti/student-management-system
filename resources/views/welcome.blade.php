@@ -1,4 +1,4 @@
-<!doctype html>
+<!-- <!doctype html>
 <html lang="{{ app()->getLocale() }}">
     <head>
         <meta charset="utf-8">
@@ -7,10 +7,8 @@
 
         <title>{{config('app.name')}}</title>
 
-        <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
 
-        <!-- Styles -->
         <style>
             html, body {
                 background-color: #fff;
@@ -62,7 +60,6 @@
             .m-b-md {
                 margin-bottom: 30px;
             }
-            /* Source: https://codepen.io/quasimondo/pen/lDdrF */
             #gradient
             {
             width: 100%;a
@@ -77,10 +74,8 @@
         <div class="flex-center position-ref full-height">
             <div class="content">
                 <div class="m-b-md">
-                    <!-- {{config('app.name')}} -->
                     <img src="appname.svg" width="500">
                 </div>
-                <!-- <p style="font-size: 25px;">@lang('Makes managing schools an amazing experience')</p> -->
                 <div class="links">
                     @if (Route::has('login'))
                         @auth
@@ -98,69 +93,146 @@
         </div>
         <script src="{{asset('js/jquery-2.1.3.min.js')}}"></script>
         <script>
-            // Source: https://codepen.io/quasimondo/pen/lDdrF
-            // Author: Mario Klingemann
-            // Slightly modified
-// var colors = new Array(
-//   [120,150,255],
-//   [160,255,130],
-//   [255,215,199],
-//   [45,175,230],
-//   [255,58,255],
-//   [255,128,50]);
-
-// var step = 0;
-// //color table indices for: 
-// // current color left
-// // next color left
-// // current color right
-// // next color right
-// var colorIndices = [0,1,2,3];
-
-// //transition speed
-// var gradientSpeed = 0.002;
-
-// function updateGradient()
-// {
-  
-//   if ( $===undefined ) return;
-  
-// var c0_0 = colors[colorIndices[0]];
-// var c0_1 = colors[colorIndices[1]];
-// var c1_0 = colors[colorIndices[2]];
-// var c1_1 = colors[colorIndices[3]];
-
-// var istep = 1 - step;
-// var r1 = Math.round(istep * c0_0[0] + step * c0_1[0]);
-// var g1 = Math.round(istep * c0_0[1] + step * c0_1[1]);
-// var b1 = Math.round(istep * c0_0[2] + step * c0_1[2]);
-// var color1 = "rgb("+r1+","+g1+","+b1+")";
-
-// var r2 = Math.round(istep * c1_0[0] + step * c1_1[0]);
-// var g2 = Math.round(istep * c1_0[1] + step * c1_1[1]);
-// var b2 = Math.round(istep * c1_0[2] + step * c1_1[2]);
-// var color2 = "rgb("+r2+","+g2+","+b2+")";
-
-//  $('#gradient').css({
-//    background: "-webkit-gradient(linear, left top, right top, from("+color1+"), to("+color2+"))"}).css({
-//     background: "-moz-linear-gradient(left, "+color1+" 0%, "+color2+" 100%)"});
-  
-//   step += gradientSpeed;
-//   if ( step >= 1 )
-//   {
-//     step %= 1;
-//     colorIndices[0] = colorIndices[1];
-//     colorIndices[2] = colorIndices[3];
-    
-//     //pick two new target color indices
-//     //do not pick the same as the current one
-//     colorIndices[1] = ( colorIndices[1] + Math.floor( 1 + Math.random() * (colors.length - 1))) % colors.length;
-//     colorIndices[3] = ( colorIndices[3] + Math.floor( 1 + Math.random() * (colors.length - 1))) % colors.length;
-    
-//   }
-// }
-
-// setInterval(updateGradient,10);
         </script>
     </body>
-</html>
+</html> -->
+
+@extends('layouts.login')
+
+@section('title', __('Login'))
+
+@section('content')
+<style type="text/css">
+    .navbar-light .navbar-nav .active>.nav-link, .navbar-light .navbar-nav .nav-link.active, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .show>.nav-link {
+        color: #ffffff !important;
+    }
+
+    .navbar-light .navbar-nav .nav-link {
+        color: #ffffff !important;
+    }
+
+    .navbar-light .navbar-nav .nav-link:hover {
+        background-color: #ffffff !important;
+        color: #011c38 !important;
+    }
+</style>
+<div class="col-12">
+    <div class="card">
+        <div class="card-body">
+             @include('layouts.nav')
+
+            <section class="section">
+                <div class="container mt-5">
+                    <div class="row">
+                    <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
+                        <div class="text-center">
+                            <img class="mb-2" src="{{ asset('img/logo.jpg')}}" style="width: 100px;"/>
+                            <h4>@lang('Sign Into Your Account')</h4>
+                        </div>
+                        <div class="card card-primary">
+                            
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    @foreach ($errors->all() as $error)
+                                        <p class="text-small">{{ $error }}</p>
+                                        <br/>
+                                    @endforeach
+                                </div>
+                            @endif
+                            <div class="card-body">
+                                <form method="POST" class="needs-validation" novalidate="" action="{{ route('login') }}">
+                                {{ csrf_field() }}
+                                <div class="form-group">
+                                    <label for="email">@lang('Email')</label>
+                                    <input id="email" type="email" class="form-control" name="email" tabindex="1" required autofocus
+                                    value="{{ old('email') }}">
+                                </div>
+                                <div class="form-group">
+                                    @if ($errors->has('email'))
+                                        <div class="invalid-feedback">
+                                            {{ $errors->first('email') }}
+                                        </div>
+                                    @endif
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="d-block">
+                                    <label for="password" class="control-label">@lang('Password')</label>
+                                    <div class="float-right">
+                                        <a href="{{ route('password.request') }}" class="text-small">
+                                        @lang('Forgot Your Password?')
+                                        </a>
+                                    </div>
+                                    </div>
+                                    <input id="password" type="password" class="form-control" name="password" tabindex="2" required>
+                                    @if ($errors->has('password'))
+                                        <div class="invalid-feedback">
+                                            {{ $errors->first('password') }}
+                                        </div>
+                                    @endif
+                                </div>
+                                {{--  
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" name="remember" class="custom-control-input" tabindex="3" id="remember-me">
+                                        <label class="custom-control-label" for="remember-me">Remember Me</label>
+                                        </div>
+                                    </div>
+                                    --}}
+                                
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
+                                    @lang('Login')
+                                    </button>
+                                </div>
+                                </form>
+                                {{--
+                                    <div class="text-center mt-4 mb-3">
+                                    <div class="text-job text-muted">Login With Social</div>
+                                    </div>
+                                    <div class="row sm-gutters">
+                                    <div class="col-6">
+                                        <a class="btn btn-block btn-social btn-facebook">
+                                        <span class="fab fa-facebook"></span> Facebook
+                                        </a>
+                                    </div>
+                                    <div class="col-6">
+                                        <a class="btn btn-block btn-social btn-twitter">
+                                        <span class="fab fa-twitter"></span> Twitter
+                                        </a>
+                                    </div>
+                                    </div>
+                                --}}
+                    
+                            </div>
+                        </div>
+                     
+                        <div class="mt-5 text-muted text-center">
+                        Any issues? Send <a href="">Send us an email</a> or call our support on 02090876567 
+                        </div>
+                     
+                        
+                    </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div class="card-footer">
+            <div class="col-lg-12">
+                <footer class="footer" style="background-color: #ccc;">
+                    <div class="container">
+                        <div class="font-size-sm text-center text-muted py 1">        
+                            <p>
+                                Copyright ©<script> document.write(new Date().getFullYear()); </script>
+                                Federal University Of Health Sciences, Otukpo. All Rights Reserved. <a href="http://www.tenece.com" target="_blank"><img id="Image1" src="{{asset('img/tenece.png')}}"></a>
+                            </p>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+     
+                    
+</div>
+@endsection

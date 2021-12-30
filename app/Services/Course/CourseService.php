@@ -1,67 +1,95 @@
 <?php
+
 namespace App\Services\Course;
 
 use App\User;
 use App\Course;
 use App\Grade;
 use App\Exam;
+use App\Section;
+use App\Studentcourse;
 use Illuminate\Support\Facades\Auth;
 
-class CourseService {
-    public function isCourseOfTeacher($teacher_id){
+class CourseService
+{
+    public function isCourseOfTeacher($teacher_id)
+    {
         return auth()->user()->role != 'student' && $teacher_id > 0;
     }
 
-    public function isCourseOfStudentOfASection($section_id){
+    public function isCourseOfStudentOfASection($section_id)
+    {
         return auth()->user()->role == 'student'
-                && $section_id == auth()->user()->section_id
-                && $section_id > 0;
+            && $section_id == auth()->user()->section_id
+            && $section_id > 0;
     }
 
-    public function isCourseOfASection($section_id){
+    public function isCourseOfASection($section_id)
+    {
         return auth()->user()->role != 'student' && $section_id > 0;
     }
 
-    public function getCoursesByTeacher($teacher_id){
-        return Course::with(['section', 'teacher','exam'])
-                        ->where('teacher_id', $teacher_id)
-                        ->get();
+    public function getCoursesByTeacher($teacher_id)
+    {
+        return Course::with(['section', 'teacher', 'exam'])
+            ->where('teacher_id', $teacher_id)
+            ->get();
     }
 
-    public function getExamsBySchoolId(){
+    public function getExamsBySchoolId()
+    {
         return Exam::where('school_id', auth()->user()->school_id)
-                        ->where('active',1)
-                        ->get();
+            ->where('active', 1)
+            ->get();
     }
 
-    public function updateCourseInfo($id, $request){
+    public function updateCourseInfo($id, $request)
+    {
         $tb = Course::find($id);
         $tb->course_name = $request->course_name;
         $tb->course_time = $request->course_time;
         $tb->save();
     }
 
-    public function getCoursesBySection($section_id){
+    public function getCoursesBySection($section_id)
+    {
         return Course::with(['section', 'teacher'])
-                        ->where('section_id', $section_id)
-                        ->get();
+            ->where('section_id', $section_id)
+            ->orderBy('section_id', 'ASC')
+            ->get();
     }
 
-    public function getStudentsFromGradeByCourseAndExam($course_id, $exam_id){
-      return Grade::with('student')
-                  ->where('course_id', $course_id)
-                  ->where('exam_id',$exam_id)
-                  ->get();
+    public function getCoursesBySectionCustom($section_id, $level)
+    {
+        return Course::with(['section', 'teacher'])
+            ->where('section_id', $section_id)
+            ->where('level', $level)
+            ->orderBy('section_id', 'ASC')
+            ->get();
     }
 
-    public function addCourse($request){
+    public function getStudentsFromGradeByCourseAndExam($course_id, $exam_id)
+    {
+        return Grade::with('student')
+            ->where('course_id', $course_id)
+            ->where('exam_id', $exam_id)
+            ->get();
+    }
+
+    public function addCourse($request)
+    {
         $tb = new Course;
         $tb->course_name = $request->course_name;
         $tb->class_id = $request->class_id;
         $tb->course_type = $request->course_type;
         $tb->course_time = $request->course_time;
         $tb->section_id = $request->section_id;
+        $tb->level = $this->getSectionLevel($request->section_id);
         $tb->teacher_id = $request->teacher_id;
+
+        $tb->course_code = $request->course_code;
+        $tb->credit_unit = $request->credit_unit;
+
         $tb->grade_system_name = '';
         $tb->quiz_count = 0;
         $tb->assignment_count = 0;
@@ -81,6 +109,8 @@ class CourseService {
         $tb->exam_id = 0;
         $tb->school_id = auth()->user()->school_id;
         $tb->user_id = auth()->user()->id; // who is creating
+
+        //dd($tb);
         // $tb->quiz_percent = $request->quiz_percent;
         // $tb->test_percent = $request->test_percent;
         // $tb->assignment_percent = $request->assignment_percent;
@@ -89,7 +119,13 @@ class CourseService {
         $tb->save();
     }
 
-    public function saveConfiguration($request){
+    public function getSectionLevel($section_id){
+        $section = Section::find($section_id);
+        return $section->room_number;
+    }
+
+    public function saveConfiguration($request)
+    {
         $tb = Course::find($request->id);
         $tb->grade_system_name = $request->grade_system_name;
         $tb->quiz_count = $request->quiz_count;
@@ -108,5 +144,32 @@ class CourseService {
         $tb->final_fullmark = $request->final_fullmark;
         $tb->practical_fullmark = $request->practical_fullmark;
         $tb->save();
+    }
+
+    public function getCoursesByClassAndLevel($class_id, $level){
+        // return Studentcourse::with(['course'])
+        //     ->join('courses', 'studentcourses.course_id', '=', 'courses.id')
+        //     ->join('users', 'courses.teacher_id', '=', 'users.id')
+        //     ->join('sections', 'courses.section_id', '=', 'sections.id')
+        //     ->where('courses.class_id', $class_id)
+        //     ->where('courses.level', $level)
+        //     ->get();
+        return Studentcourse::select(
+                "studentcourses.id as sid",
+                "studentcourses.status as status",   
+                "courses.course_code as course_code",
+                "courses.credit_unit as credit_unit",
+                "courses.course_name as course_name",
+                "courses.course_type as course_type",
+                "sections.section_number as semester",
+                "users.name as lecturer"
+            )
+            ->join("courses", "courses.id", "=", "studentcourses.course_id")
+            ->join("sections", "sections.id", "=", "courses.section_id")
+            ->join("users", "users.id", "=", "courses.teacher_id")
+            ->where('courses.class_id', $class_id)
+            ->where('courses.level', $level)
+            ->orderBy('sections.id', 'ASC')
+            ->get();
     }
 }

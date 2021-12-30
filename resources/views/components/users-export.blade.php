@@ -1,5 +1,5 @@
 @if(Auth::user()->role == 'admin')
-<div class="well">
+<div class="well" style="margin-bottom: 20px;">
     <form class="form-inline" action="{{url('users/export/students-xlsx')}}" method="get">
         <div class="form-group">
             <label for="export-year">@lang('Export in Excel by Year'): </label>
@@ -9,14 +9,17 @@
         <button type="submit" class="btn btn-sm btn-default"><i class="material-icons">get_app</i> Excel</button>
     </form>
 </div>
+<script src="{{asset('admin/js/jquery.js')}}"></script>
 <script>
-    $(function () {
+    $(function() {
         $('.datepicker').datepicker({
             format: "yyyy",
             viewMode: "years",
             minViewMode: "years"
         });
     })
-
 </script>
+
+@elseif(Auth::user()->role == 'admission')
+
 @endif

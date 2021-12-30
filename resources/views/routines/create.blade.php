@@ -1,22 +1,19 @@
-@extends('layouts.app')
+@extends('layouts.landing')
 
 @section('title', __('Add Routine'))
 
 @section('content')
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-2" id="side-navbar">
-            @include('layouts.leftside-menubar')
-        </div>
-        <div class="col-md-10" id="main-container">
-            <div class="panel panel-default">
-                <div class="page-panel-title">@lang('Add Routine')
-              </div>
-                <div class="panel-body">
+        <div class="col-md-12" id="main-container">
+            <div class="card card-primary">
+                <div class="card-header">@lang('Add Routine')
+                </div>
+                <div class="card-body">
                     @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
+                    <div class="alert alert-success">
+                        {{ session('status') }}
+                    </div>
                     @endif
                     @component('components.file-uploader',['upload_type'=>'routine','classes'=>$classes,'sections'=>$sections])
                     @endcomponent
