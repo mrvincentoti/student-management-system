@@ -195,3 +195,6 @@ DB_PASSWORD=secret
    3. Give marks
    4. To get Grade of students of a course for given marks, Teacher clicks the Get Total Marks button.
       (Usually this is done at the end of the semester)
+      
+## Credit
+[Credit](https://github.com/changeweb/Unifiedtransform)
