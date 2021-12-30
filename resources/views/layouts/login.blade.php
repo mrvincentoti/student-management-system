@@ -3,10 +3,11 @@
 
 
 <!-- auth-login.html  21 Nov 2019 03:49:32 GMT -->
+
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>SIS - Login</title>
+  <title>SIS - FUHSO</title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{asset('admin/css/app.min.css')}}">
   <link rel="stylesheet" href="{{asset('admin/bundles/bootstrap-social/bootstrap-social.css')}}">
@@ -26,9 +27,8 @@
   <div id="app">
     @yield('content')
   </div>
-       <!-- Modal with form -->
-  <div class="modal fade" id="declineCourseModal" tabindex="-1" role="dialog" aria-labelledby="declineModal"
-    aria-hidden="true">
+  <!-- Modal with form -->
+  <div class="modal fade" id="declineCourseModal" tabindex="-1" role="dialog" aria-labelledby="declineModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -39,7 +39,7 @@
         </div>
         <div class="modal-body">
           <form class="" action="{{ url('student/send-course-email') }}" method="post">
-          {{ csrf_field() }}
+            {{ csrf_field() }}
             <div class="form-group">
               <label>Title</label>
               <input type="text" class="form-control" placeholder="Title" name="title">
@@ -63,12 +63,12 @@
   <!-- General JS Scripts -->
   <script src="{{asset('admin/js/app.min.js')}}"></script>
   <!-- JS Libraies -->
-  
+
   <!-- Page Specific JS File -->
   <!-- Template JS File -->
   <script src="{{asset('admin/js/scripts.js')}}"></script>
   <!-- Custom JS File -->
-  
+
   <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
   <script src="{{asset('admin/js/custom.js')}}"></script>
 
@@ -80,10 +80,11 @@
   <!-- Page Specific JS File -->
   <script src="{{asset('admin/js/page/form-wizard.js')}}"></script>
 
-  
+
 
 </body>
 
 
 <!-- auth-login.html  21 Nov 2019 03:49:32 GMT -->
+
 </html>
