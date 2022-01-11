@@ -95,7 +95,7 @@ class UserController extends Controller
         $course = Classes::query()->where('id', $user->course_id)->get()->first();
         return view('auth.applicant-view', compact('user', 'faculty', 'department', 'course'));
     }
-    
+
     public function generateMatric($id)
     {
         $user = $this->user->find($id);
@@ -130,8 +130,8 @@ class UserController extends Controller
             'code' => \Auth::user()->code,
             'session' => $session->session_code
         ]);*/
-        
-        
+
+
         $user->update([
             'active' => 1,
             'code' => \Auth::user()->code
@@ -993,11 +993,11 @@ class UserController extends Controller
         return response()->json($city);
     }
 
-    public function export()
+    public function export(Request $request)
     {
         // return Excel::download(new RegisteredExport, 'excel.xlsx');
         $year = date('Y');
-        return Excel::download(new RegisteredExport($year), date('Y-m-d') . '-students.xlsx');
+        return Excel::download(new RegisteredExport($year, $request->department), date('Y-m-d') . '-students.xlsx');
     }
 
     public function addCustomUsers()
@@ -1158,7 +1158,7 @@ class UserController extends Controller
             ]
         );
     }
-    
+
     public function updateMatricNumber()
     {
         $departments = Department::query()->where('school_id', \Auth::user()->school_id)->get();
@@ -1183,7 +1183,7 @@ class UserController extends Controller
 
         return view('student.student-in-department', ['department' => $department, 'students' => $students]);
     }
-    
+
     public function saveCodePost(Request $request)
     {
         $tbc = $this->userService->updateMatric($request);
