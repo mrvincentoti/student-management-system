@@ -46,7 +46,7 @@
                                 </form>
                             </div>
                         </div>
-
+                        </div>
                         <hr />
                         @component('components.users-list',['users'=>$users,'current_page'=>$current_page,'per_page'=>$per_page])
                         @endcomponent
