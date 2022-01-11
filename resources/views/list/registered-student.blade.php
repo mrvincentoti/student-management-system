@@ -28,14 +28,25 @@
                             {{ session('status') }}
                         </div>
                         @endif
-                        <div style="margin-bottom: 20px;">
-                            <form class="form-inline" action="/exported" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                <input type="text" name="department" />
-                                <button type="submit" class="btn btn-icon btn-primary"><i class="fa fa-download"></i> Excel</button>
-                            </form>
-                        </div>
 
+                        <div class="row" style="margin-bottom: 20px;">
+                            <div class="col-md-12">
+                                <form class="form-inline" action="/exported" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <select class="form-control" id="department" name="department">
+                                        <option value="">Select Department</option>
+                                        @foreach($departments as $department)
+                                        <option value="{{ $department->id }}">{{ $department->class_number }}</option>
+                                        @endforeach
+                                    </select>
+
+                                    <div class="input-group mb-2 mr-sm-2">
+                                        <button style="height: 40px; margin-top:7px; margin-left: 2px;" type="submit" class="btn btn-icon btn-primary"><i class="fa fa-download"></i> Export to Excel</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        </div>
                         <hr />
                         @component('components.users-list',['users'=>$users,'current_page'=>$current_page,'per_page'=>$per_page])
                         @endcomponent

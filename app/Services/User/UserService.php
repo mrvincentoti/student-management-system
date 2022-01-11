@@ -2,6 +2,7 @@
 
 namespace App\Services\User;
 
+use App\Classes;
 use App\User;
 use App\Section;
 use App\StudentInfo;
@@ -50,8 +51,11 @@ class UserService
 
     public function indexView($view, $users)
     {
+        $department = Classes::query()->get();
+
         return view($view, [
             'users' => $users,
+            'departments' => $department,
             'current_page' => $users->currentPage(),
             'per_page' => $users->perPage(),
         ]);
@@ -606,7 +610,7 @@ class UserService
             return $ex;
         }
     }
-    
+
     public function updateMatric($request)
     {
         $i = 0;
