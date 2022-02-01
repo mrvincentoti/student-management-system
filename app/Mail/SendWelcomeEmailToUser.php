@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\User; 
+use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -34,10 +34,10 @@ class SendWelcomeEmailToUser extends Mailable
     public function build()
     {
         return $this->subject('Welcome to ' . config('app.name'))->markdown('email.user.welcome')
-                ->with([
-                    'name' => $this->user->name,
-                    'email' => $this->user->email,
-                    'password' => $this->password,
-                ]);
+            ->with([
+                'name' => $this->user->name,
+                'email' => $this->user->email,
+                'password' => $this->password,
+            ]);
     }
 }

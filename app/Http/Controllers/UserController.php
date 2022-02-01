@@ -48,6 +48,7 @@ use App\Imports\ExcelImport;
 use Maatwebsite\Excel\Facades\Excel;
 
 use App\Exports\RegisteredExport;
+use App\Mail\WelcomeTeacher;
 
 /**
  * Class UserController
@@ -1045,8 +1046,17 @@ class UserController extends Controller
         if (!empty($tb->email)) {
             try {
                 // Fire event to send welcome email
-                event(new UserRegistered($tb, $password));
+                //event(new UserRegistered($tb, $password));
+                $myEmail = $tb->email;
+                $details = [
+                    'name' => $tb->name,
+                    'email' => $tb->email,
+                    'password' => $password
+                ];
+                //Mail::to($myEmail)->send(new RejectAcceptance($details));
+                Mail::to($myEmail)->send(new WelcomeTeacher($details));
             } catch (\Exception $ex) {
+                Log::alert($ex);
                 Log::info('Email failed to send to this address: ' . $tb->email);
             }
             return back()->with('add-user-success', __("User added successfully"));

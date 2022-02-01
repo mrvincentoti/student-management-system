@@ -48,7 +48,7 @@
 
             @if(Auth::user()->role != 'student' && isset(Auth::user()->school->code) &&
             Auth::user()->role != 'admission' && isset(Auth::user()->school->code)
-            && Auth::user()->role != 'applicant' && Auth::user()->role != 'custom')
+            && Auth::user()->role != 'applicant' && Auth::user()->role != 'custom' && Auth::user()->role != 'teacher')
             <li><a class="nav-link" href="{{url('users/'.Auth::user()->school->code.'/1/0')}}"><i data-feather="users"></i><span>@lang('Students')</span></a></li>
             <li><a class="nav-link" href="{{url('users/'.Auth::user()->school->code.'/0/1')}}"><i data-feather="users"></i><span>@lang('Teachers')</span></a></li>
             <li><a class="nav-link" href="{{url('users/add-custom-users/'.Auth::user()->school->code)}}"><i data-feather="users"></i><span>@lang('Users')</span></a></li>
@@ -103,7 +103,7 @@
             <li><a class="nav-link" href="{{ url('grades/all-exams-grade') }}"><i data-feather="check-square"></i><span>@lang('Grades')</span></a></li>
             <li><a class="nav-link" href="{{ url('update-matriculation-number') }}"><i data-feather="check-square"></i><span>@lang('Update Matric Number')</span></a></li>
             <li><a class="nav-link" href="{{ url('students/'.Auth::user()->school->code.'/0') }}"><i data-feather="check-square"></i><span>@lang('CGPA')</span></a></li>
-            
+
             <li class="nav-item" style="border-bottom: 1px solid #dbd8d8;"></li>
             <!-- <li class="nav-item">
                     <a class="nav-link" href="{{ url('academic/routine') }}"><i class="material-icons">calendar_today</i> <span class="nav-link-text">@lang('Class Routine')</span></a>
@@ -356,6 +356,11 @@
                 </a>
             </li>
             @endif
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url('user/config/change_password') }}">
+                    <i data-feather="users"></i><span>@lang('Change Password')</span>
+                </a>
+            </li>
         </ul>
     </aside>
 </div>
