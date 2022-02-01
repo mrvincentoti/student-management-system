@@ -37,7 +37,7 @@
         </div>
         <div class="form-group">
           <label for="assignTeacher{{$section->id}}">@lang('Assign Course Teacher')</label>
-          <select class="form-control" id="assignTeacher{{$section->id}}" name="teacher_id">
+          <select class="form-control" id="assignTeacher1{{$section->id}}" name="teacher_id">
             <option value="0" selected disabled>@lang('Select Department First')</option>
             @if(count($teachers) > 0)
             @php
@@ -45,7 +45,7 @@
             return $teacher->school_id == $school->id;
             });
             @endphp
-            @foreach($teachers_of_this_school as $teacher)
+            @foreach($teachers as $teacher)
             <option value="{{$teacher->id}}" data-department="{{$teacher->department_name}}">{{$teacher->name}} {{$teacher->department_name}}</option>
             @endforeach
             @endif
