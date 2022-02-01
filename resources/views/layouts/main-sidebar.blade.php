@@ -356,6 +356,11 @@
                 </a>
             </li>
             @endif
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url('user/config/change_password') }}">
+                    <i data-feather="users"></i><span>@lang('Change Password')</span>
+                </a>
+            </li>
         </ul>
     </aside>
 </div>
