@@ -135,7 +135,7 @@
                     <input type="number" class="form-control input-sm" id="a_full" name="a_fullmark" placeholder="@lang('Assignment Full Marks')" max="20" value="{{$grade->course->a_fullmark}}">
                   </td>
                   <td>
-                    <input type="number" class="form-control input-sm" id="ct_full" name="ct_fullmark" placeholder="@lang('CT Full Marks')" max="20" value="{{$grade->course->ct_fullmark}}">
+                    <input type="number" class="form-control input-sm" id="ct_full" name="ct_fullmark" placeholder="@lang('CT Full Marks')" max="40" value="{{$grade->course->ct_fullmark}}">
                   </td>
                   <td>
                     <input type="number" class="form-control input-sm" id="final_full" name="final_fullmark" placeholder="@lang('Final Full Marks')" max="100" value="{{$grade->course->final_fullmark}}">

@@ -1,15 +1,15 @@
 {{--<div class="well" style="font-size: 15px;">@lang('Choose Field to Display')</div>--}}
 <style>
-  #grade-labels > .label{
+  #grade-labels>.label {
     margin-right: 1%;
   }
 </style>
 <div class="col-md-12" id="grade-labels">
   <span class="label label-danger checkbox-inline">
-    <input type="checkbox" name="attendance" value="4" checked> @lang('Attendance')
+    <input type="checkbox" name="attendance" value="4"> @lang('Attendance')
   </span>
   <span class="label label-primary checkbox-inline">
-    <input type="checkbox" name="quiz[]" value="5" checked> @lang('Quiz') 1
+    <input type="checkbox" name="quiz[]" value="5"> @lang('Quiz') 1
   </span>
   <span class="label label-primary checkbox-inline">
     <input type="checkbox" name="quiz[]" value="6"> @lang('Quiz') 2
@@ -24,7 +24,7 @@
     <input type="checkbox" name="quiz[]" value="9"> @lang('Quiz') 5
   </span>
   <span class="label label-success checkbox-inline">
-    <input type="checkbox" name="assignment[]" value="10" checked> @lang('Assignment') 1
+    <input type="checkbox" name="assignment[]" value="10"> @lang('Assignment') 1
   </span>
   <span class="label label-success checkbox-inline">
     <input type="checkbox" name="assignment[]" value="11"> @lang('Assignment') 2
@@ -48,7 +48,7 @@
     <input type="checkbox" name="ct[]" value="17"> @lang('Class Test') 5
   </span>
   <span class="label label-default checkbox-inline">
-    <input type="checkbox" name="few" value="18">@lang('Final Exam Written')
+    <input type="checkbox" name="few" value="18" checked>@lang('Final Exam Written')
   </span>
   <span class="label label-default checkbox-inline">
     <input type="checkbox" name="fem" value="19">@lang('Final Exam MCQ')
@@ -102,8 +102,7 @@
             <input type="number" name="attendance[]" class="form-control input-sm" placeholder="@lang('Attendance')" value="{{$grade->attendance}}">
           </td>
           <td>
-            <input type="number" name="quiz1[]" class="form-control input-sm input-sm" value="{{$grade->quiz1}}"
-              placeholder="@lang('Qz 1')" max="20">
+            <input type="number" name="quiz1[]" class="form-control input-sm input-sm" value="{{$grade->quiz1}}" placeholder="@lang('Qz 1')" max="20">
           </td>
           <td>
             <input type="number" name="quiz2[]" class="form-control input-sm" value="{{$grade->quiz2}}" placeholder="@lang('Qz 2')">
@@ -161,13 +160,13 @@
 </form>
 
 <script>
-  $(function () {
+  $(function() {
     for (var i = 6; i < 21; i++) {
       if (i == 10 || i == 13)
         continue;
       $("#marking-table td:nth-child(" + i + "),#marking-table th:nth-child(" + i + ")").hide();
     }
-    $(":checkbox").change(function () {
+    $(":checkbox").change(function() {
       if ($(this).is(':checked')) {
         $("#marking-table td:nth-child(" + $(this).val() + "),#marking-table th:nth-child(" + $(this).val() +
           ")").show();
@@ -176,5 +175,14 @@
           ")").hide();
       }
     });
+
+    $(':checkbox').each(function() {
+      if ($(this).is(':checked')) {
+        $("#marking-table td:nth-child(" + $(this).val() + "),#marking-table th:nth-child(" + $(this).val() + ")").show();
+      } else {
+        $("#marking-table td:nth-child(" + $(this).val() + "),#marking-table th:nth-child(" + $(this).val() +
+          ")").hide();
+      }
+    })
   });
 </script>
