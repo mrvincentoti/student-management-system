@@ -17,6 +17,7 @@ use App\Http\Controllers\Collection;
 use App\Imports\GradesImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Session;
+use Redirect;
 
 class GradeController extends Controller
 {
@@ -241,7 +242,11 @@ class GradeController extends Controller
     Session::put('exam_id', $request->exam_id);
     Session::put('teacher_id', $request->teacher_id);
 
-    Excel::import(new GradesImport, $request->file('result_sheet')->store('temp'));
+    try {
+      Excel::import(new GradesImport, $request->file('result_sheet')->store('temp'));
+    } catch (\Exception $e) {
+      return Redirect::back()->withErrors(['Your excel sheet contains empty rows.Delete all the empty rows in the excel sheet and try again']);
+    }
     return back()->with('status', __('Saved'));
   }
 

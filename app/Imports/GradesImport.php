@@ -4,14 +4,18 @@ namespace App\Imports;
 
 use App\Grade;
 use App\User;
+use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithStartRow;
+use Maatwebsite\Excel\Concerns\WithValidation;
 use Illuminate\Support\Facades\Session;
 
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
-class GradesImport implements ToModel
+class GradesImport implements ToModel, WithStartRow
 {
+    use Importable;
 
 
     /**
@@ -62,5 +66,10 @@ class GradesImport implements ToModel
     {
         $student = User::where('student_code', $matricnumber)->get()->first();
         return $student->id;
+    }
+
+    public function startRow(): int
+    {
+        return 2;
     }
 }
