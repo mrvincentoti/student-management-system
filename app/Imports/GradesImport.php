@@ -52,7 +52,7 @@ class GradesImport implements ToModel, WithStartRow
                 'mcq' => 0.00,
                 'practical' => 0.00,
                 'exam_id' => Session::get('exam_id'),
-                'student_id' => $this->getStudentByMatricNumber($row[1]), // get student ID
+                'student_id' => $this->getStudentByMatricNumber($row[1]) != "none" ? $this->getStudentByMatricNumber($row[1]) : "NULL", // get student ID
                 'teacher_id' => Session::get('teacher_id'),
                 'course_id' => Session::get('course_id'),
                 'user_id' => Auth::user()->id,
@@ -65,7 +65,11 @@ class GradesImport implements ToModel, WithStartRow
     public function getStudentByMatricNumber($matricnumber)
     {
         $student = User::where('student_code', $matricnumber)->get()->first();
-        return $student->id;
+        if (!empty($student)) {
+            return $student->id;
+        } else {
+            return "none";
+        }
     }
 
     public function startRow(): int
