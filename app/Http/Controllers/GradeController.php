@@ -245,6 +245,7 @@ class GradeController extends Controller
     try {
       Excel::import(new GradesImport, $request->file('result_sheet')->store('temp'));
     } catch (\Exception $e) {
+      dd($e);
       return Redirect::back()->withErrors(['Your excel sheet contains empty rows.Delete all the empty rows in the excel sheet and try again']);
     }
     return back()->with('status', __('Saved'));
