@@ -6,57 +6,76 @@
 </style>
 <div class="col-md-12" id="grade-labels">
   <span class="label label-danger checkbox-inline">
-    <input type="checkbox" name="attendance" value="4"> @lang('Attendance')
+    <input type="checkbox" name="attendance" value="4" disabled> @lang('Attendance')
   </span>
   <span class="label label-primary checkbox-inline">
-    <input type="checkbox" name="quiz[]" value="5"> @lang('Quiz') 1
+    <input type="checkbox" name="quiz[]" value="5" disabled> @lang('Quiz') 1
   </span>
   <span class="label label-primary checkbox-inline">
-    <input type="checkbox" name="quiz[]" value="6"> @lang('Quiz') 2
+    <input type="checkbox" name="quiz[]" value="6" disabled> @lang('Quiz') 2
   </span>
   <span class="label label-primary checkbox-inline">
-    <input type="checkbox" name="quiz[]" value="7"> @lang('Quiz') 3
+    <input type="checkbox" name="quiz[]" value="7" disabled> @lang('Quiz') 3
   </span>
   <span class="label label-primary checkbox-inline">
-    <input type="checkbox" name="quiz[]" value="8"> @lang('Quiz') 4
+    <input type="checkbox" name="quiz[]" value="8" disabled> @lang('Quiz') 4
   </span>
   <span class="label label-primary checkbox-inline">
-    <input type="checkbox" name="quiz[]" value="9"> @lang('Quiz') 5
+    <input type="checkbox" name="quiz[]" value="9" disabled> @lang('Quiz') 5
   </span>
   <span class="label label-success checkbox-inline">
-    <input type="checkbox" name="assignment[]" value="10"> @lang('Assignment') 1
+    <input type="checkbox" name="assignment[]" value="10" disabled> @lang('Assignment') 1
   </span>
   <span class="label label-success checkbox-inline">
-    <input type="checkbox" name="assignment[]" value="11"> @lang('Assignment') 2
+    <input type="checkbox" name="assignment[]" value="11" disabled> @lang('Assignment') 2
   </span>
   <span class="label label-success checkbox-inline">
-    <input type="checkbox" name="assignment[]" value="12"> @lang('Assignment') 3
+    <input type="checkbox" name="assignment[]" value="12" disabled> @lang('Assignment') 3
   </span>
   <span class="label label-info checkbox-inline">
-    <input type="checkbox" name="ct[]" value="13" checked> @lang('Class Test') 1
+    <input type="checkbox" name="ct[]" value="13" checked disabled> @lang('Class Test') 1
   </span>
   <span class="label label-info checkbox-inline">
-    <input type="checkbox" name="ct[]" value="14"> @lang('Class Test') 2
+    <input type="checkbox" name="ct[]" value="14" disabled> @lang('Class Test') 2
   </span>
   <span class="label label-info checkbox-inline">
-    <input type="checkbox" name="ct[]" value="15"> @lang('Class Test') 3
+    <input type="checkbox" name="ct[]" value="15" disabled> @lang('Class Test') 3
   </span>
   <span class="label label-info checkbox-inline">
-    <input type="checkbox" name="ct[]" value="16"> @lang('Class Test') 4
+    <input type="checkbox" name="ct[]" value="16" disabled> @lang('Class Test') 4
   </span>
   <span class="label label-info checkbox-inline">
-    <input type="checkbox" name="ct[]" value="17"> @lang('Class Test') 5
+    <input type="checkbox" name="ct[]" value="17" disabled> @lang('Class Test') 5
   </span>
   <span class="label label-default checkbox-inline">
-    <input type="checkbox" name="few" value="18" checked>@lang('Final Exam Written')
+    <input type="checkbox" name="few" value="18" checked disabled>@lang('Final Exam Written')
   </span>
   <span class="label label-default checkbox-inline">
-    <input type="checkbox" name="fem" value="19">@lang('Final Exam MCQ')
+    <input type="checkbox" name="fem" value="19" disabled>@lang('Final Exam MCQ')
   </span>
   <span class="label label-warning checkbox-inline">
-    <input type="checkbox" name="practical" value="20">@lang('Practical')
+    <input type="checkbox" name="practical" value="20" disabled>@lang('Practical')
   </span>
 </div>
+<br />
+<br />
+<div class="form-group form-float col-md-12">
+  <div class="form-line">
+    <code class="text-center">Please not that the file must be an excel file with the following columns [S/N,MAT. NO.,CA,EXAMS,TOTAL,GRADE,REMARK] in this same order</code>
+    <code class="text-center">Kindly, note that any result not in the stipulated format will not be uploaded.</code>
+  </div>
+</div>
+<form action="{{url('grades/upload-grade')}}" method="POST" enctype="multipart/form-data">
+  {{csrf_field()}}
+  <input type="hidden" name="section_id" value="{{$section_id}}">
+  <input type="hidden" name="course_id" value="{{$course_id}}">
+  <input type="hidden" name="exam_id" value="{{$exam_id}}">
+  <input type="hidden" name="teacher_id" value="{{$teacher_id}}">
+  <label>Choose Result File</label>
+  <input class="form-control col-md-6" type="file" id="result_sheet" name="result_sheet" placeholder="Select Result Sheet" required>
+  <input type="submit" class="btn btn-primary mt-2" value="@lang('Upload')">
+</form>
+
 <br />
 <br />
 <form action="{{url('grades/save-grade')}}" method="POST">
@@ -81,12 +100,12 @@
           <th scope="col">@lang('Assignment') 1</th>
           <th scope="col">@lang('Assignment') 2</th>
           <th scope="col">@lang('Assignment') 3</th>
-          <th scope="col">@lang('CT') 1</th>
+          <th scope="col">@lang('CA')</th>
           <th scope="col">@lang('CT') 2</th>
           <th scope="col">@lang('CT') 3</th>
           <th scope="col">@lang('CT') 4</th>
           <th scope="col">@lang('CT') 5</th>
-          <th scope="col">@lang('Written')</th>
+          <th scope="col">@lang('Exam')</th>
           <th scope="col">@lang('MCQ')</th>
           <th scope="col">@lang('Practical')</th>
         </tr>

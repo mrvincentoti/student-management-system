@@ -50,6 +50,7 @@ Route::middleware(['auth', 'teacher'])->prefix('grades')->group(function () {
     Route::get('c/{teacher_id}/{course_id}/{exam_id}/{section_id}', 'GradeController@cindex');
     Route::post('calculate-marks', 'GradeController@calculateMarks');
     Route::post('save-grade', 'GradeController@update');
+    Route::post('upload-grade', 'GradeController@uploadResult');
 });
 
 Route::middleware(['auth'])->group(function () {

@@ -14,6 +14,9 @@ use App\Http\Traits\GradeTrait;
 use App\Services\Grade\GradeService;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Collection;
+use App\Imports\GradesImport;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Session;
 
 class GradeController extends Controller
 {
@@ -228,6 +231,17 @@ class GradeController extends Controller
       return __("Ops, an error occured");
     }
 
+    return back()->with('status', __('Saved'));
+  }
+
+  public function uploadResult(Request $request)
+  {
+    Session::put('section_id', $request->section_id);
+    Session::put('course_id', $request->course_id);
+    Session::put('exam_id', $request->exam_id);
+    Session::put('teacher_id', $request->teacher_id);
+
+    Excel::import(new GradesImport, $request->file('result_sheet')->store('temp'));
     return back()->with('status', __('Saved'));
   }
 
