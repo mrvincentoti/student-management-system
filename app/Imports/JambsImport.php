@@ -9,10 +9,10 @@ use Illuminate\Support\Facades\Log;
 class JambsImport implements ToModel
 {
     /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
+     * @param array $row
+     *
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
     public function model(array $row)
     {
         // return new Jamb::updateOrcreate([
@@ -24,10 +24,10 @@ class JambsImport implements ToModel
 
         $jamb = Jamb::updateOrCreate(
             [
-                'jambregno'=> strtoupper($row[0]),
-                'surname'=> ucfirst($row[1]),
-                'firstname'=> ucfirst($row[2]),
-                'middlename'=> ucfirst($row[3])
+                'jambregno' => strtoupper($row[0]),
+                'surname' => ucfirst($row[1]),
+                'firstname' => ucfirst($row[2]),
+                'middlename' => ucfirst($row[3])
             ]
         );
 
