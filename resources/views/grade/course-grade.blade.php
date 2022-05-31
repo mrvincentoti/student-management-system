@@ -93,10 +93,10 @@
                     <input type="number" class="form-control input-sm" id="assignment" name="assignment_percent" placeholder="@lang('Percentage')" max="50" value="{{$grade->course->assignment_percent}}" readonly>
                   </td>
                   <td>
-                    <input type="number" class="form-control input-sm" id="quiz" name="quiz_percent" placeholder="@lang('Percentage')" max="70" value="{{$grade->course->quiz_percent}}" readonly>
+                    <input type="number" class="form-control input-sm" id="quiz" name="quiz_percent" placeholder="@lang('Percentage')" max="60" value="{{$grade->course->quiz_percent}}" readonly>
                   </td>
                   <td>
-                    <input type="number" class="form-control input-sm" id="class-test" name="ct_percent" placeholder="@lang('Percentage')" max="50" value="30" readonly>
+                    <input type="number" class="form-control input-sm" id="class-test" name="ct_percent" placeholder="@lang('Percentage')" max="50" value="40" readonly>
                   </td>
                 </tr>
                 <tr>
@@ -123,7 +123,7 @@
                 </tr>
                 <tr>
                   <td>
-                    <input type="number" class="form-control input-sm" id="final" name="final_exam_percent" placeholder="@lang('Percentage')" max="100" value="70" readonly>
+                    <input type="number" class="form-control input-sm" id="final" name="final_exam_percent" placeholder="@lang('Percentage')" max="100" value="60" readonly>
                   </td>
                   <td>
                     <input type="number" class="form-control input-sm" id="practical_percent" name="practical_percent" placeholder="@lang('Percentage')" max="100" value="{{$grade->course->practical_percent}}" readonly>
@@ -135,10 +135,10 @@
                     <input type="number" class="form-control input-sm" id="a_full" name="a_fullmark" placeholder="@lang('Assignment Full Marks')" max="20" value="{{$grade->course->a_fullmark}}" readonly>
                   </td>
                   <td>
-                    <input type="number" class="form-control input-sm" id="ct_full" name="ct_fullmark" placeholder="@lang('CT Full Marks')" max="40" value="30" readonly>
+                    <input type="number" class="form-control input-sm" id="ct_full" name="ct_fullmark" placeholder="@lang('CT Full Marks')" max="40" value="40" readonly>
                   </td>
                   <td>
-                    <input type="number" class="form-control input-sm" id="final_full" name="final_fullmark" placeholder="@lang('Final Full Marks')" max="100" value="70" readonly>
+                    <input type="number" class="form-control input-sm" id="final_full" name="final_fullmark" placeholder="@lang('Final Full Marks')" max="100" value="60" readonly>
                   </td>
                   <td>
                     <input type="number" class="form-control input-sm" id="practical_full" name="practical_fullmark" placeholder="@lang('Practical Full Marks')" max="100" value="{{$grade->course->practical_fullmark}}" readonly>
